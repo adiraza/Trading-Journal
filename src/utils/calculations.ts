@@ -1,5 +1,3 @@
-import type { AppSettings } from '../types'
-
 export interface PnLCalculations {
   profitLoss: number
   profitLossPercent: number
@@ -66,8 +64,4 @@ export function formatPercent(value: number, decimals = 2): string {
 
 export function formatRR(value: number): string {
   return `${value >= 0 ? '+' : ''}${value.toFixed(2)}R`
-}
-
-export function getDefaultRiskAmount(settings: AppSettings): number {
-  return (settings.defaultAccountSize * settings.riskPerTrade) / 100
 }
