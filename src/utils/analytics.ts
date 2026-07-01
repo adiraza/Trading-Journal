@@ -219,7 +219,6 @@ export function filterTrades(trades: Trade[], filters: FilterOptions): Trade[] {
         trade.entryModel,
         trade.notes,
         trade.tags.join(' '),
-        trade.accountName,
       ]
         .join(' ')
         .toLowerCase()
