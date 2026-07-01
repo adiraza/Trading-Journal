@@ -107,7 +107,7 @@ export function ProfilePage() {
   }, [closedTrades])
 
   const plannedStats = useMemo(() => {
-    const totalRisk = trades.reduce((sum, t) => sum + (t.riskAmount || 0), 0)
+    const totalRisk = trades.reduce((sum, t) => sum + (t.stopLoss || 0), 0)
     const totalReward = trades.reduce((sum, t) => sum + (t.takeProfit || 0), 0)
     return { totalRisk, totalReward }
   }, [trades])

@@ -30,14 +30,8 @@ export interface Trade {
   entrySession: string
   instrument: string
   direction: TradeDirection
-  lotSize: number
-  accountName: string
-  accountSize: number
-  entryPrice: number
   stopLoss: number
   takeProfit: number
-  riskAmount: number
-  riskPercent: number
   entryModel: string
   marketStructure: string
   timeframe: string
@@ -53,7 +47,6 @@ export interface Trade {
   exitTime?: string
   exitDayName?: string
   exitSession?: string
-  exitPrice?: number
   exitReason?: ExitReason
   profitLoss?: number
   profitLossPercent?: number
