@@ -168,7 +168,7 @@ export function TradeFormPage() {
     options: { closed: boolean; profitLoss?: number }
   ): Promise<Trade> => {
     const now = new Date().toISOString()
-    const riskPercent = calculateRiskPercent(data.stopLoss, accountSize)
+    
     const finalEntryModel = data.entryModel === 'Custom' ? data.customEntryModel : data.entryModel
 
     const base: Trade = {
