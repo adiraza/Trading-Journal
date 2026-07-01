@@ -26,9 +26,18 @@ import {
 import { formatCurrency } from '../utils/calculations'
 import { SESSIONS } from '../constants'
 
+function getGreeting(): string {
+  const hour = new Date().getHours()
+  if (hour >= 5 && hour < 12) return 'Good Morning'
+  if (hour >= 12 && hour < 17) return 'Good Afternoon'
+  if (hour >= 17 && hour < 21) return 'Good Evening'
+  return 'Welcome Back'
+}
+
 export function DashboardPage() {
   const { trades } = useTrades()
   const { settings } = useSettings()
+  const greeting = getGreeting()
 
   const allStats = useMemo(() => computeTradeStats(trades), [trades])
   const todayStats = useMemo(() => computeTradeStats(getTradesForPeriod(trades, 'today')), [trades])
@@ -65,7 +74,9 @@ export function DashboardPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">Dashboard</h2>
+          <h2 className="text-2xl font-bold text-[var(--color-text-primary)]">
+            {settings.traderName ? `${greeting}, ${settings.traderName}` : greeting}
+          </h2>
           <p className="text-sm text-[var(--color-text-secondary)]">Your trading performance overview</p>
         </div>
         <Link to="/new-trade">

@@ -52,6 +52,12 @@ export function SettingsPage() {
       <Card title="Account Defaults">
         <div className="grid gap-4 sm:grid-cols-2">
           <Input
+            label="Trader Name"
+            value={form.traderName}
+            onChange={(e) => setForm({ ...form, traderName: e.target.value })}
+            placeholder="Enter your name"
+          />
+          <Input
             label="Default Account Size"
             type="number"
             value={form.defaultAccountSize}

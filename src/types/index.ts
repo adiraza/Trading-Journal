@@ -77,6 +77,7 @@ export interface SessionTiming {
 
 export interface AppSettings {
   id: string
+  traderName: string
   defaultAccountSize: number
   defaultCurrency: string
   riskPerTrade: number

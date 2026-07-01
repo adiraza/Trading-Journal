@@ -17,15 +17,12 @@ export const INSTRUMENTS = [
 ] as const
 
 export const ENTRY_MODELS = [
-  'SMC Pullback',
-  'Order Block',
-  'Breaker',
-  'Mitigation',
-  'FVG',
-  'Liquidity Sweep',
-  'MSS',
-  'CHOCH',
-  'BOS',
+  'Decisional OF',
+  'Decisional OB',
+  'Extreme OF',
+  'Extreme OB',
+  'Engineering LQD',
+  'Rejection Block',
   'Custom',
 ] as const
 

@@ -22,6 +22,7 @@ import dayjs from 'dayjs'
 import { generateTradeId, getDateTimeFields, getExitDateTimeFields, detectSessions } from '../utils/dates'
 import { calculatePnL, calculateRiskPercent } from '../utils/calculations'
 import type { Trade, TradeImage, ExitReason } from '../types'
+import { ENTRY_MODELS as PREDEFINED_ENTRY_MODELS } from '../constants'
 
 interface TradeFormData {
   entryDate: string
@@ -36,6 +37,7 @@ interface TradeFormData {
   stopLoss: number
   takeProfit: number
   entryModel: string
+  customEntryModel: string
   marketStructure: string
   timeframe: string
   tradeType: string
@@ -61,6 +63,7 @@ export function TradeFormPage() {
   const [showExitModal, setShowExitModal] = useState(false)
   const [savedProfitLoss, setSavedProfitLoss] = useState<number | undefined>(undefined)
   const [isClosed, setIsClosed] = useState(false)
+  const [isCustomEntryModel, setIsCustomEntryModel] = useState(false)
 
   const accountSize = settings.defaultAccountSize
   const currency = settings.defaultCurrency
@@ -74,7 +77,8 @@ export function TradeFormPage() {
       direction: 'buy',
       stopLoss: 0,
       takeProfit: 0,
-      entryModel: 'SMC Pullback',
+      entryModel: 'Decisional OF',
+      customEntryModel: '',
       marketStructure: 'Bullish',
       timeframe: 'H1',
       tradeType: 'Day Trade',
@@ -92,6 +96,7 @@ export function TradeFormPage() {
   const takeProfit = watch('takeProfit')
   const instrument = watch('instrument')
   const direction = watch('direction')
+  const entryModel = watch('entryModel')
 
   const entryRiskPercent = useMemo(
     () => calculateRiskPercent(stopLoss, accountSize),
@@ -117,9 +122,14 @@ export function TradeFormPage() {
   }, [entryDate, entryTime, settings.sessionTimings, setValue])
 
   useEffect(() => {
+    setIsCustomEntryModel(entryModel === 'Custom')
+  }, [entryModel])
+
+  useEffect(() => {
     if (id) {
       getTrade(id).then((trade) => {
         if (trade) {
+          const isPredefined = PREDEFINED_ENTRY_MODELS.includes(trade.entryModel as any)
           reset({
             entryDate: trade.entryDate,
             entryTime: trade.entryTime,
@@ -132,7 +142,8 @@ export function TradeFormPage() {
             direction: trade.direction,
             stopLoss: trade.riskAmount || trade.stopLoss,
             takeProfit: trade.takeProfit,
-            entryModel: trade.entryModel,
+            entryModel: isPredefined ? trade.entryModel : 'Custom',
+            customEntryModel: isPredefined ? '' : trade.entryModel,
             marketStructure: trade.marketStructure,
             timeframe: trade.timeframe,
             tradeType: trade.tradeType,
@@ -158,6 +169,7 @@ export function TradeFormPage() {
   ): Promise<Trade> => {
     const now = new Date().toISOString()
     const riskPercent = calculateRiskPercent(data.stopLoss, accountSize)
+    const finalEntryModel = data.entryModel === 'Custom' ? data.customEntryModel : data.entryModel
 
     const base: Trade = {
       id: id ?? generateTradeId(),
@@ -178,7 +190,7 @@ export function TradeFormPage() {
       takeProfit: data.takeProfit,
       riskAmount: data.stopLoss,
       riskPercent,
-      entryModel: data.entryModel,
+      entryModel: finalEntryModel,
       marketStructure: data.marketStructure,
       timeframe: data.timeframe,
       tradeType: data.tradeType,
@@ -319,6 +331,13 @@ export function TradeFormPage() {
               {...register('entryModel')}
               options={ENTRY_MODELS.map((m) => ({ value: m, label: m }))}
             />
+            {isCustomEntryModel && (
+              <Input
+                label="Custom Entry Model"
+                {...register('customEntryModel')}
+                placeholder="Enter custom strategy name"
+              />
+            )}
             <Select
               label="Market Structure"
               {...register('marketStructure')}

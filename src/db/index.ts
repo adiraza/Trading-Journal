@@ -10,6 +10,7 @@ const DEFAULT_SESSIONS = [
 
 export const DEFAULT_SETTINGS: AppSettings = {
   id: 'default',
+  traderName: '',
   defaultAccountSize: 10000,
   defaultCurrency: 'USD',
   riskPerTrade: 1,

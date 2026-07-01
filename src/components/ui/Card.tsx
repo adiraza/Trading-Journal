@@ -13,15 +13,15 @@ export function Card({ children, className, title, subtitle, action }: CardProps
   return (
     <div
       className={clsx(
-        'rounded-xl border border-[var(--color-border)] bg-[var(--color-surface-card)] p-4 shadow-sm transition-shadow hover:shadow-md',
+        'card p-5',
         className
       )}
     >
       {(title || action) && (
-        <div className="mb-3 flex items-center justify-between">
+        <div className="mb-4 flex items-center justify-between">
           <div>
-            {title && <h3 className="text-sm font-semibold text-[var(--color-text-primary)]">{title}</h3>}
-            {subtitle && <p className="text-xs text-[var(--color-text-secondary)]">{subtitle}</p>}
+            {title && <h3 className="text-base font-semibold text-[var(--color-text-primary)]">{title}</h3>}
+            {subtitle && <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">{subtitle}</p>}
           </div>
           {action}
         </div>
